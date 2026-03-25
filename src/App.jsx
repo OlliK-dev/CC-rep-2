@@ -1,9 +1,35 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
+
+  const [text, setText] = useState('')
+  const [sentiment, setSentiment] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleAnalyze = async () => {
+    if (!text.trim()) return
+
+    setLoading(true)
+    setSentiment('')
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/sentiment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({text}),
+      })
+
+      const data = await response.json()
+      setSentiment(data.sentiment)
+    } catch (error) {
+      setSentiment('Error contacting backend')
+    }
+
+    setLoading(false)
+  }
 
   return (
     <div className='page'>
@@ -19,7 +45,19 @@ function App() {
       <div className='border-box'>
 
         <div className='text'>
-          <p>Stuff will be added in the future</p>
+          <h2>Write a sentence that will be analyzed:</h2>
+          <input
+            type="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder='type a sentence'
+          />
+          <button onClick={handleAnalyze} disabled={loading}>
+            {loading ? 'Analyzing...' : 'Analyze'}
+          </button>
+
+
+          {sentiment && <h3>Sentiment: {sentiment}</h3>}
         </div>
 
       </div>
