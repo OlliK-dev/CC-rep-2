@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import './App.css'
 
+const API_BASE_URL = (
+  import.meta.env.VITE_API_BASE_URL ?? 'http://127.0.0.1:8000'
+).replace(/\/$/, '')
+
 function App() {
 
   const [text, setText] = useState('')
@@ -14,13 +18,17 @@ function App() {
     setSentiment('')
 
     try {
-      const response = await fetch('https://cc-rep-2-backend-git-cloud-computing-2026.2.rahtiapp.fi/sentiment', {
+      const response = await fetch(`${API_BASE_URL}/sentiment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({text}),
       })
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`)
+      }
 
       const data = await response.json()
       setSentiment(data.sentiment)
