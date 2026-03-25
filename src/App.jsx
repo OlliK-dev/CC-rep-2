@@ -14,7 +14,7 @@ function App() {
     setSentiment('')
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/sentiment', {
+      const response = await fetch('https://cc-rep-2-backend-git-cloud-computing-2026.2.rahtiapp.fi/sentiment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
