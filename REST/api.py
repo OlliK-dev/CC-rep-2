@@ -11,7 +11,7 @@ app = FastAPI()
 def _parse_allowed_origins():
     raw_origins = os.getenv(
         "ALLOWED_ORIGINS",
-        "https://cc-rep-2-backend-git-cloud-computing-2026.2.rahtiapp.fi/",
+        "https://cc-rep-2.onrender.com/",
     )
     return [origin.strip().rstrip("/") for origin in raw_origins.split(",") if origin.strip()]
 
